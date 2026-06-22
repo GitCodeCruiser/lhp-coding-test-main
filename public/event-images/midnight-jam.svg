@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Midnight jam">
+  <defs>
+    <radialGradient id="jam-glow" cx="50%" cy="80%" r="80%">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="#0f172a"/>
+  <rect width="800" height="500" fill="url(#jam-glow)"/>
+  <g opacity="0.9">
+    <rect x="120" y="120" width="14" height="260" rx="7" fill="#22d3ee"/>
+    <rect x="180" y="180" width="14" height="200" rx="7" fill="#a78bfa"/>
+    <rect x="240" y="90" width="14" height="290" rx="7" fill="#f472b6"/>
+    <rect x="300" y="200" width="14" height="180" rx="7" fill="#facc15"/>
+    <rect x="500" y="150" width="14" height="230" rx="7" fill="#34d399"/>
+    <rect x="560" y="100" width="14" height="280" rx="7" fill="#f472b6"/>
+    <rect x="620" y="190" width="14" height="190" rx="7" fill="#22d3ee"/>
+    <rect x="680" y="140" width="14" height="240" rx="7" fill="#a78bfa"/>
+  </g>
+  <circle cx="400" cy="250" r="70" fill="none" stroke="#e2e8f0" stroke-width="6" opacity="0.85"/>
+  <circle cx="400" cy="250" r="14" fill="#e2e8f0" opacity="0.85"/>
+  <text x="40" y="470" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="600" fill="#f8fafc" opacity="0.92">Midnight Jam</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Desert festival">
+  <defs>
+    <linearGradient id="desert-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="55%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#desert-sky)"/>
+  <circle cx="400" cy="190" r="80" fill="#fff7ed" opacity="0.85"/>
+  <path d="M0 330 Q200 280 400 320 T800 300 V500 H0 Z" fill="#d97706"/>
+  <path d="M0 390 Q220 350 430 385 T800 370 V500 H0 Z" fill="#b45309"/>
+  <path d="M0 440 Q240 410 470 435 T800 425 V500 H0 Z" fill="#92400e"/>
+  <text x="40" y="475" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="600" fill="#fff7ed" opacity="0.95">Desert Festival</text>
+</svg>

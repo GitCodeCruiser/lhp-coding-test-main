@@ -20,6 +20,10 @@ class EventFactory extends Factory
         $lng = fake()->longitude();
         $startsAt = fake()->numberBetween(strtotime('-1 year'), strtotime('+1 year'));
 
+        // words(3, true) is typed as array|string; normalise to a string for ucwords().
+        $words = fake()->words(3, true);
+        $name = ucwords(is_array($words) ? implode(' ', $words) : $words);
+
         return [
             'user_id' => User::factory(),
             'type' => $type,
@@ -28,7 +32,7 @@ class EventFactory extends Factory
             'latitude' => $lat,
             'longitude' => $lng,
             'payload' => [
-                'name' => ucwords(fake()->words(3, true)),
+                'name' => $name,
                 'category' => $type,
                 'venue' => ['name' => fake()->company(), 'capacity' => fake()->numberBetween(20, 50000)],
                 'location' => ['lat' => $lat, 'lng' => $lng],

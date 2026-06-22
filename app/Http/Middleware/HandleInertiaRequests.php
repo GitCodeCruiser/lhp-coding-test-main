@@ -41,7 +41,13 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'csrf_token' => csrf_token(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'flash' => [
+                // Read once and forgotten by the session after the redirect.
+                // Shape matches the FlashToast type the frontend toast helper reads.
+                'toast' => $request->session()->get('toast'),
+            ],
         ];
     }
 }

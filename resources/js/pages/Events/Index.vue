@@ -3,6 +3,8 @@ import { Head, Link } from '@inertiajs/vue3';
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useEventsFeed } from '@/composables/useEventsFeed';
+import { toQueryParams } from '@/lib/eventsApi';
 
 interface EventRow {
     id: string;
@@ -22,64 +24,31 @@ const form = reactive({
     from: props.filters.from ?? '',
 });
 
-const rows = ref<EventRow[]>([]);
-const page = ref(0);
-const lastPage = ref<number | null>(null);
-const total = ref<number | null>(null);
-const loadedBytes = ref(0);
-const loadedMs = ref(0);
-const loading = ref(false);
-const hasLoadedOnce = ref(false);
+const { items: rows, total, loading, error, hasLoadedOnce, loadedBytes, loadedMs, loadMore, retry, reset } =
+    useEventsFeed<EventRow>();
 
 const sentinel = ref<HTMLElement | null>(null);
 let observer: IntersectionObserver | null = null;
 
-const hasMore = computed(() => lastPage.value === null || page.value < lastPage.value);
-
 const loadedSize = computed(() => {
     const kb = loadedBytes.value / 1024;
+
     return kb < 1024 ? `${kb.toFixed(1)} KB` : `${(kb / 1024).toFixed(2)} MB`;
 });
 
 const loadedSeconds = computed(() => (loadedMs.value / 1000).toFixed(1));
 
-async function loadMore() {
-    if (loading.value || !hasMore.value) {
-        return;
-    }
-    loading.value = true;
-
-    const params = new URLSearchParams({ page: String(page.value + 1) });
-    if (form.status) params.set('status', form.status);
-    if (form.from) params.set('from', form.from);
-
-    try {
-        const response = await fetch(`/events/data?${params.toString()}`, {
-            headers: { Accept: 'application/json' },
-        });
-        const payload = await response.json();
-
-        rows.value.push(...payload.data);
-        page.value = payload.current_page;
-        lastPage.value = payload.last_page;
-        total.value = payload.total;
-        loadedBytes.value += payload.stats.bytes;
-        loadedMs.value += payload.stats.ms;
-        hasLoadedOnce.value = true;
-    } finally {
-        loading.value = false;
-    }
+function load() {
+    loadMore(toQueryParams(form));
 }
 
 function applyFilters() {
-    rows.value = [];
-    page.value = 0;
-    lastPage.value = null;
-    total.value = null;
-    loadedBytes.value = 0;
-    loadedMs.value = 0;
-    hasLoadedOnce.value = false;
-    loadMore();
+    reset();
+    load();
+}
+
+function retryLoad() {
+    retry(toQueryParams(form));
 }
 
 const statusVariant = (status: string) => {
@@ -99,15 +68,17 @@ onMounted(() => {
     observer = new IntersectionObserver(
         (entries) => {
             if (entries[0]?.isIntersecting) {
-                loadMore();
+                load();
             }
         },
         { rootMargin: '400px' },
     );
+
     if (sentinel.value) {
         observer.observe(sentinel.value);
     }
-    loadMore();
+
+    load();
 });
 
 onBeforeUnmount(() => observer?.disconnect());
@@ -124,7 +95,7 @@ onBeforeUnmount(() => observer?.disconnect());
             </p>
         </div>
 
-        <form class="flex flex-wrap items-end gap-3" @submit.prevent>
+        <form class="flex flex-wrap items-end gap-3" @submit.prevent="applyFilters">
             <div class="flex flex-col gap-1">
                 <label class="text-xs text-muted-foreground" for="status">Status</label>
                 <select
@@ -145,7 +116,7 @@ onBeforeUnmount(() => observer?.disconnect());
                     class="h-9 rounded-md border border-input bg-background px-3 text-sm"
                 />
             </div>
-            <Button type="button" @click.prevent="aplyFilters">Filter</Button>
+            <Button type="submit">Filter</Button>
         </form>
 
         <div class="overflow-x-auto rounded-lg border">
@@ -173,7 +144,13 @@ onBeforeUnmount(() => observer?.disconnect());
                             <Link :href="`/events/${event.id}`" class="text-primary hover:underline">View</Link>
                         </td>
                     </tr>
-                    <tr v-if="!loading && hasLoadedOnce && rows.length === 0">
+                    <tr v-if="error && !loading">
+                        <td colspan="6" class="px-3 py-8 text-center">
+                            <p class="text-muted-foreground">Couldn't load events.</p>
+                            <Button class="mt-2" variant="outline" size="sm" @click="retryLoad">Try again</Button>
+                        </td>
+                    </tr>
+                    <tr v-else-if="!loading && hasLoadedOnce && rows.length === 0">
                         <td colspan="6" class="px-3 py-8 text-center text-muted-foreground">No events found.</td>
                     </tr>
                 </tbody>
@@ -184,7 +161,7 @@ onBeforeUnmount(() => observer?.disconnect());
 
         <div class="py-2 text-sm text-gray-400">
             <span v-if="loading">loading...</span>
-            <span v-else-if="hasLoadedOnce">Loaded {{ loadedSize }} in {{ loadedSeconds }}s</span>
+            <span v-else-if="hasLoadedOnce && !error">Loaded {{ loadedSize }} in {{ loadedSeconds }}s</span>
         </div>
     </div>
 </template>

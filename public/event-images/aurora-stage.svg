@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Aurora stage">
+  <defs>
+    <linearGradient id="aurora" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="45%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <radialGradient id="aurora-glow" cx="50%" cy="20%" r="70%">
+      <stop offset="0%" stop-color="#a7f3d0" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#a7f3d0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#aurora)"/>
+  <rect width="800" height="500" fill="url(#aurora-glow)"/>
+  <path d="M0 360 Q200 300 400 350 T800 330 V500 H0 Z" fill="#0b1220" opacity="0.8"/>
+  <path d="M0 410 Q220 360 420 400 T800 385 V500 H0 Z" fill="#060a14" opacity="0.9"/>
+  <g fill="#e2e8f0" opacity="0.85">
+    <circle cx="120" cy="90" r="2.2"/><circle cx="240" cy="60" r="1.6"/><circle cx="360" cy="110" r="2"/>
+    <circle cx="520" cy="70" r="1.8"/><circle cx="650" cy="120" r="2.2"/><circle cx="710" cy="60" r="1.5"/>
+  </g>
+  <text x="40" y="470" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="600" fill="#f8fafc" opacity="0.9">Aurora Stage</text>
+</svg>

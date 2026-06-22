@@ -2,15 +2,21 @@
 
 namespace App\Models;
 
+use Database\Factories\EventFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 class Event extends Model
 {
-    use HasFactory, HasUuids;
+    /** @use HasFactory<EventFactory> */
+    use HasFactory;
+
+    use HasUuids;
 
     protected $guarded = [];
 
@@ -25,8 +31,37 @@ class Event extends Model
         return (string) Str::uuid();
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return HasMany<EventImage, $this>
+     */
+    public function images(): HasMany
+    {
+        return $this->hasMany(EventImage::class)->orderBy('sort_order');
+    }
+
+    /**
+     * The single primary image — lets the map load one image per marker instead of all.
+     *
+     * @return HasOne<EventImage, $this>
+     */
+    public function primaryImage(): HasOne
+    {
+        return $this->hasOne(EventImage::class)->where('is_primary', true);
+    }
+
+    /**
+     * @return HasMany<Attendee, $this>
+     */
+    public function attendees(): HasMany
+    {
+        return $this->hasMany(Attendee::class);
     }
 }

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Harbor night">
+  <defs>
+    <linearGradient id="harbor-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0c4a6e"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </linearGradient>
+    <linearGradient id="harbor-water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#155e75"/>
+      <stop offset="100%" stop-color="#083344"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="320" fill="url(#harbor-sky)"/>
+  <rect y="320" width="800" height="180" fill="url(#harbor-water)"/>
+  <circle cx="150" cy="100" r="46" fill="#e0f2fe" opacity="0.85"/>
+  <g fill="#0b2030" opacity="0.9">
+    <rect x="300" y="190" width="40" height="130"/>
+    <rect x="350" y="160" width="55" height="160"/>
+    <rect x="415" y="210" width="35" height="110"/>
+    <rect x="460" y="175" width="60" height="145"/>
+    <rect x="530" y="200" width="45" height="120"/>
+  </g>
+  <g fill="#fcd34d" opacity="0.9">
+    <rect x="360" y="180" width="8" height="8"/><rect x="380" y="210" width="8" height="8"/>
+    <rect x="470" y="195" width="8" height="8"/><rect x="495" y="230" width="8" height="8"/>
+  </g>
+  <g stroke="#7dd3fc" stroke-width="3" opacity="0.5">
+    <line x1="100" y1="360" x2="220" y2="360"/><line x1="320" y1="400" x2="480" y2="400"/>
+    <line x1="540" y1="370" x2="660" y2="370"/>
+  </g>
+  <text x="40" y="470" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="600" fill="#e0f2fe" opacity="0.92">Harbor Night</text>
+</svg>
